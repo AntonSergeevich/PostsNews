@@ -53,7 +53,7 @@ class PostList(ListView):
         return context
 
 
-class PostDetail(DetailView):
+class PostDetail(LoginRequiredMixin, DetailView):
     model = Post
     template_name = 'blog.html'
     context_object_name = 'blog'
@@ -73,7 +73,7 @@ class PostDetail(DetailView):
         return comment_list
 
 
-class PostAdd(PermissionRequiredMixin, CreateView):
+class PostAdd(LoginRequiredMixin, CreateView):
     model = Post
     template_name = 'add.html'
     context_object_name = 'add'
