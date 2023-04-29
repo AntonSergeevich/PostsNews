@@ -1,0 +1,109 @@
+{% extends 'flatpages/default.html' %}
+
+{% load static %}
+
+
+{% block title %} Блог {% endblock %}
+
+{% block content %}
+
+    <div role="main" class="main">
+        <section
+                class="page-header page-header-modern page-header-background page-header-background-md custom-bg-color-grey-1 mb-0"
+                style="background-image: url(img/demos/education/backgrounds/page-header.jpg); background-position: 100% ;">
+            <div class="container">
+                <div class="row mt-5">
+                    <div class="col align-self-center p-static text-center">
+                        <h1 class="font-weight-bold text-color-secondary text-10">Блог</h1>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <div class="container">
+            <div class="row py-3">
+                <div class="col">
+                    <ul class="breadcrumb d-block">
+                        <li><a href="#">Главная</a></li>
+                        <li class="active">Блог</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="row py-3">
+                <div><a href="{% url 'post_create' %}"><h3>Добавить новость</h3></a></div>
+                <div class="col-lg-8 mb-5 mb-lg-0">
+                    {% if blogs %}
+                        {% for blog in blogs %}
+                            <article class="mb-5">
+                                <div class="card bg-transparent border-0 custom-border-radius-1">
+                                    <div class="card-body p-0 z-index-1">
+                                        <a href="{% url 'post_detail' blog.id %}" data-cursor-effect-hover="plus">
+                                            {% if blog.img %}
+                                                <img class="card-img-top border-radius-0 mb-2" src="{{ blog.img.url }}"
+                                                     alt="Card Image">
+                                            {% endif %}
+                                        </a>
+                                        <p class="text-uppercase text-color-default text-1 my-2">
+                                            <time pubdate
+                                                  datetime="2021-01-10">{{ blog.date_creation|date:'d M Y' }}</time>
+                                            <span class="opacity-3 d-inline-block px-2">|</span>
+                                            3 Comments
+                                            <span class="opacity-3 d-inline-block px-2">|</span>
+                                            {{ blog.author.user }}
+                                        </p>
+                                        <div class="card-body p-0">
+                                            <h4 class="card-title text-5 font-weight-semi-bold pb-1 mb-2"><a
+                                                    class="text-color-secondary text-color-hover-primary text-decoration-none text-4"
+                                                    href="{% url 'post_detail' blog.id %}">{{ blog.title }}</a></h4>
+                                            <p class="card-text mb-2">{{ blog.preview }}</p>
+                                            <a href="{% url 'post_detail' blog.id %}"
+                                               class="text-decoration-none custom-link-hover-effects">
+                                                        <span class="btn btn-link font-weight-semi-bold text-decoration-none text-2 ps-0 text-uppercase">
+                                                            Читать
+                                                        </span>
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </article>
+                        {% endfor %}
+                    {% else %}
+                        <h1>Новостей нет =(</h1>
+                    {% endif %}
+
+                    <!-- Кнопки 123 перехода на страницы -->
+                    <ul class="custom-pagination-style-1 pagination pagination-rounded pagination-md justify-content-center">
+                        {% if is_paginated %}
+                            {% if page_obj.has_previous %}
+                                <li class="page-item"><a class="page-link"
+                                                         href="?page={{ page_obj.previous_page_number }}"
+                                                         data-cursor-effect-hover="fit"><i
+                                        class="fas fa-angle-left"></i></a></li>
+                            {% endif %}
+
+                            {% for num in page_obj.paginator.page_range %}
+                                {% if page_obj.number == num %}
+                                    <li class="page-item"><a class="page-link" href="#"
+                                                             data-cursor-effect-hover="fit">{{ num }}</a></li>
+                                {% elif num > page_obj.number|add:'-3' and num < page_obj.number|add:'3' %}
+                                    <li class="page-item"><a class="page-link" href="?page={{ num }}"
+                                                             data-cursor-effect-hover="fit">{{ num }}</a></li>
+                                {% endif %}
+                            {% endfor %}
+
+                            {% if page_obj.has_next %}
+                                <li class="page-item"><a class="page-link" href="?page={{ page_obj.next_page_number }}"
+                                                         data-cursor-effect-hover="fit"><i
+                                        class="fas fa-angle-right"></i></a></li>
+                            {% endif %}
+                        {% endif %}
+                    </ul>
+                    <!-- Конец кнопок 123 перехода на страницы -->
+                </div>
+
+            {% include 'flatpages/side_panel.html' %}
+
+            </div>
+        </div>
+    </div>
+
+{% endblock %}

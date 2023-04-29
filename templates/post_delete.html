@@ -1,0 +1,39 @@
+{% extends 'flatpages/default.html' %}
+
+
+{% load static %}
+{% load custom_filters %}
+
+
+{% block title %} Блог {% endblock %}
+
+{% block content %}
+
+    <div role="main" class="main">
+        <section
+            class="page-header page-header-modern page-header-background page-header-background-md custom-bg-color-grey-1 mb-0"
+            style="background-image: url(img/demos/education/backgrounds/page-header.jpg); background-position: 100% ;">
+        <div class="container">
+            <div class="row mt-5">
+                <div class="col align-self-center p-static text-center">
+                    <h1 class="font-weight-bold text-color-secondary text-10">Удалить новость</h1>
+                </div>
+            </div>
+        </div>
+    </section>
+        <div class="container" >
+            <div class="row py-3">
+                <h2>Вы действительно хотите удалить данный пост?</h2>
+                <h4>Название - {{ post.title }}</h4>
+                <p>Текст - {{ post.text }}</p>
+                <p>Автор - {{ post.author.user}}</p>
+                <p>Дата загрузки - {{ post.date_creation|date:'d M Y' }}</p>
+                <form method="POST">
+                    {% csrf_token %}
+                    <input style="display: block" type="submit" value="Подтвердить">
+                </form>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}

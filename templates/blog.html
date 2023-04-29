@@ -1,0 +1,157 @@
+{% extends 'flatpages/default.html' %}
+
+
+{% load static %}
+{% load custom_filters %}
+
+
+{% block title %} Блог {% endblock %}
+
+{% block content %}
+
+			<div role="main" class="main">
+
+				<section class="page-header page-header-modern page-header-background page-header-background-md custom-bg-color-grey-1 mb-0" style="background-image: url(img/demos/education/backgrounds/page-header.jpg); background-position: 100% 100%;">
+					<div class="container">
+						<div class="row mt-5">
+							<div class="col align-self-center p-static text-center">
+								<h1 class="font-weight-bold text-color-secondary text-10">{{blog.title|censor }}</h1>
+							</div>
+						</div>
+					</div>
+				</section>
+				<div class="container">
+					<div class="row py-3">
+						<div class="col">
+							<ul class="breadcrumb d-block">
+								<li><a href="#">Главная</a></li>
+								<li class="active">Блог</li>
+							</ul>
+						</div>
+					</div>
+					<div class="row py-3">
+						<div class="col-lg-8 mb-5 mb-lg-0">
+
+							<article>
+								<div class="card border-0">
+									<div class="card-body z-index-1 p-0">
+										<p class="text-uppercase text-1 mb-3 text-color-default"><time pubdate datetime="2021-01-10">{{blog.date_creation|date:'d M Y'}}</time>
+											<span class="opacity-3 d-inline-block px-2">|</span> {{blog.author.user}}
+                                            <span class="opacity-3 d-inline-block px-2">|</span><a href="{% url 'post_update' blog.id %}">РЕДАКТИРОВАТЬ</a>
+                                            <span class="opacity-3 d-inline-block px-2">|</span><a href="{% url 'post_delete' blog.id %}">УДАЛИТЬ</a></p>
+
+										<div class="post-image pb-4">
+                                            {% if blog.img %}
+											    <img class="card-img-top custom-border-radius-1" src="{{ blog.img.url }}" alt="Card Image">
+                                            {% endif %}
+										</div>
+
+										<div class="card-body p-0">
+											<p>{{blog.text|censor}}</p>
+
+
+											<div class="addthis_inline_share_toolbox"></div>
+											<script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-60ba220dbab331b0"></script>
+
+											<hr class="my-5">
+
+
+											<hr class="my-5">
+
+											<div id="comments" class="post-block post-comments">
+												<h3 class="text-color-secondary text-capitalize font-weight-semi-bold text-5 m-0 mb-3">Комментарии</h3>
+
+												<ul class="comments">
+													<li>
+														{% for review in comment %}
+															<div class="comment">
+																<div class="img-thumbnail img-thumbnail-no-borders d-none d-sm-block">
+																	<img class="avatar rounded-circle" alt="" src="{% static 'img/avatars/avatar-2.jpg' %}">
+																</div>
+																<div class="comment-block">
+																	<div class="comment-arrow"></div>
+																	<span class="comment-by">
+																		<strong class="text-dark">{{ review.name }}</strong>
+																		<span class="float-end">
+																			<span> <a href="#"><i class="fas fa-reply"></i> Reply</a></span>
+																		</span>
+																	</span>
+																	<p>{{ review.message }}</p>
+																	<span class="date float-end">{{ review.date_creation }}</span>
+																</div>
+															</div>
+														{% endfor %}
+
+														<ul class="comments reply">
+															<li>
+																<div class="comment">
+																	<div class="img-thumbnail img-thumbnail-no-borders d-none d-sm-block">
+																		<img class="avatar rounded-circle" alt="" src="{% static 'img/avatars/avatar-3.jpg' %}">
+																	</div>
+																	<div class="comment-block">
+																		<div class="comment-arrow"></div>
+																		<span class="comment-by">
+																			<strong class="text-dark">John Doe</strong>
+																			<span class="float-end">
+																				<span> <a href="#"><i class="fas fa-reply"></i> Reply</a></span>
+																			</span>
+																		</span>
+																		<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam viverra euismod odio, gravida pellentesque urna varius vitae, gravida pellentesque urna varius vitae.</p>
+																		<span class="date float-end">January 12, 2021 at 1:38 pm</span>
+																	</div>
+																</div>
+															</li>
+														</ul>
+													</li>
+
+												</ul>
+
+												<h3 class="text-color-secondary text-capitalize font-weight-semi-bold text-5 m-0 mb-3 mt-5">Отправить комментарий</h3>
+
+												<form class="custom-form-simple-validation p-4 rounded bg-color-grey" method="POST">
+													{% csrf_token %}
+													<div class="p-2">
+														<div class="row">
+															<div class="form-group col-lg-6">
+																<label class="form-label required mb-1 font-weight-semi-bold text-dark">Имя</label>
+																<input type="text" value="" data-msg-required="Please enter your name." maxlength="100" class="form-control py-3 px-3 border-0 box-shadow-none" name="name" id="name" required>
+															</div>
+															<div class="form-group col-lg-6">
+																<label class="form-label required mb-1 font-weight-semi-bold text-dark">Email (отображаться не будет)</label>
+																<input type="email" value="" data-msg-required="Please enter your email address." data-msg-email="Please enter a valid email address." maxlength="100" class="form-control py-3 px-3 border-0 box-shadow-none" name="email" id="email" required>
+															</div>
+														</div>
+														<div class="row">
+															<div class="form-group col">
+																<label class="form-label required mb-1 font-weight-semi-bold text-dark">Комментарий</label>
+																<textarea maxlength="5000" data-msg-required="Please enter your message." rows="8" class="form-control p-3 border-0 box-shadow-none" name="message" id="message" required></textarea>
+															</div>
+														</div>
+														<div class="row">
+															<div class="form-group col mb-0">
+																<button type="submit" class="btn btn-primary custom-btn-style-1 font-weight-semibold btn-px-4 btn-py-2 text-3-5" data-loading-text="Loading..." data-cursor-effect-hover="plus" data-cursor-effect-hover-color="light">
+																	<span>Запостить</span>
+																</button>
+															</div>
+														</div>
+													</div>
+												</form>
+
+											</div>
+
+										</div>
+									</div>
+								</div>
+							</article>
+
+						</div>
+
+						{% include 'flatpages/side_panel.html' %}
+
+                    </div>
+				</div>
+
+			</div>
+
+
+{% endblock %}

@@ -1,0 +1,103 @@
+1)Создаем пользователей:
+	>>> u1 = User.objects.create_user(username='Yerzhan')
+	>>> u1
+	<User: Yerzhan>
+	>>> u2 = User.objects.create_user(username='Sergey')
+
+2)Создаем авторов:
+	>>> Author.objects.create(authorUser=u1)
+	<Author: Author object (1)>
+	>>> Author.objects.create(authorUser=u2)
+	<Author: Author object (2)>
+
+3)Создаем категории:
+	>>> Category.objects.create(name='IT')
+	<Category: Category object (1)>
+	>>> Category.objects.create(name='Sport')
+	<Category: Category object (2)>
+	>>> Category.objects.create(name='Vehicles')
+	<Category: Category object (3)>
+	>>> Category.objects.create(name='Games')
+	<Category: Category object (4)>
+
+4)Создаем cтатьи:
+	>>> Post.objects.create(author=author, categoryType='NW', title='sometitle', text='sometext')
+	<Post: Post object (1)>
+	>>> Post.objects.get(id=1).title
+	'sometitle'
+	>>> Post.objects.create(author=author, categoryType='AR', title='Healthing', text='Make sport is very healthy')
+	<Post: Post object (2)>
+	>>> Post.objects.create(author=author2, categoryType='AR', title='Python', text='Hello world!')
+	<Post: Post object (3)>
+
+5)К статьям/присваиваем категории:
+	>>> Post.objects.get(id=1).postCategory.add(Category.objects.get(id=1))
+	>>> Post.objects.get(id=2).postCategory.add(Category.objects.get(id=2))
+	>>> Post.objects.get(id=3).postCategory.add(Category.objects.get(id=1))
+	>>> Post.objects.get(id=1).postCategory.add(Category.objects.get(id=3))
+	>>> Post.objects.get(id=2).postCategory.add(Category.objects.get(id=4))
+	>>> Post.objects.get(id=3).postCategory.add(Category.objects.get(id=3))
+
+6)Создаем комментарии к статьям:
+	>>> Comment.objects.create(commentPost=Post.objects.get(id=1), commentUser=Author.objects.get(id=1).authorUser, text='greate post')
+	<Comment: Comment object (1)>
+	>>> Comment.objects.create(commentPost=Post.objects.get(id=1), commentUser=Author.objects.get(id=2).authorUser, text='interesting news')
+	<Comment: Comment object (2)>
+	>>> Comment.objects.create(commentPost=Post.objects.get(id=2), commentUser=Author.objects.get(id=2).authorUser, text='LoL')
+	<Comment: Comment object (3)>
+	>>> Comment.objects.create(commentPost=Post.objects.get(id=3), commentUser=Author.objects.get(id=1).authorUser, text='Python is the best prog')
+	<Comment: Comment object (4)>
+	>>> Comment.objects.create(commentPost=Post.objects.get(id=3), commentUser=Author.objects.get(id=2).authorUser, text='Hello Skillfactory')
+	<Comment: Comment object (5)>
+
+7)Применям функции like() и dislike() к комментариям:
+	>>> Comment.objects.get(id=1).like()
+	>>> Comment.objects.get(id=1).rating
+	1
+	>>> Comment.objects.get(id=1).dislike()
+	>>> Comment.objects.get(id=1).dislike()
+	>>> Comment.objects.get(id=1).dislike()
+	>>> Comment.objects.get(id=1).rating
+	-2
+	>>> Comment.objects.get(id=2).like()
+	>>> Comment.objects.get(id=2).like()
+	>>> Comment.objects.get(id=2).like()
+	>>> Comment.objects.get(id=3).like()
+	>>> Comment.objects.get(id=3).like()
+	>>> Comment.objects.get(id=4).like()
+	>>> Comment.objects.get(id=5).dislike()
+
+8)Присваиваем в переменную а и b и обновляем рейтинги пользователей:
+	>>> a = Author.objects.get(id=1)
+	>>> a.update_rating()
+	>>> a.ratingAuthor
+	20
+	>>> b = Author.objects.get(id=2)
+	>>> b.update_rating()
+	>>> b.ratingAuthor
+	25
+
+9)Выводим рейтинг лучшего пользователя применяя сортировку:
+	>>> a = Author.objects.order_by('-ratingAuthor')[:1]
+	>>> a
+	<QuerySet [<Author: Author object (2)>]>
+
+10)Выводм дату добавления, username автора, рейтинг, заголовок и превью лучшей статьи
+	>>> bestPost = Post.objects.order_by('-rating')[:1]
+	>>> bestPost
+	<QuerySet [<Post: Post object (3)>]>
+	
+	>>> for i in bestPost:
+	...     i.dateCreation
+	...     i.author.authorUser
+	...     i.rating
+	...     i.title
+	...     i.preview()
+	...
+
+11)Выводим все комментарии (дата, пользователь, рейтинг, текст) к этой статье.
+	>>> bestPostCom = Comment.objects.filter(commentPost=3)
+	>>> bestPostCom
+	<QuerySet [<Comment: Comment object (4)>, <Comment: Comment object (5)>, <Comment: C
+	omment object (6)>]>
+	>>>

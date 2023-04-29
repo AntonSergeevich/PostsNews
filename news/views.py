@@ -1,0 +1,120 @@
+import requests
+from django.shortcuts import render
+from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
+from .models import Post, Comment, Author, Category, PageMain, PageAbout, PageCourse, PageTeacher, PageContact, \
+    BaseRegisterForm
+from .filters import PostFilter
+from .forms import PostForm, CommentForm
+from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
+from datetime import datetime
+from django.contrib.auth.models import User
+
+
+class Main(ListView):
+    model = PageMain
+    template_name = 'main.html'
+    context_object_name = 'main'
+
+
+class AboutUs(ListView):
+    model = PageAbout
+    template_name = 'about.html'
+    context_object_name = 'about'
+
+
+class Courses(ListView):
+    model = PageCourse
+    template_name = 'courses.html'
+    context_object_name = 'courses'
+
+
+class Teachers(ListView):
+    model = PageTeacher
+    template_name = 'tearchers.html'
+    context_object_name = 'teachers'
+
+
+class Contacts(ListView):
+    model = PageContact
+    template_name = 'contacts.html'
+    context_object_name = 'contacts'
+
+
+class PostList(ListView):
+    model = Post
+    template_name = 'blogs.html'
+    context_object_name = 'blogs'
+    queryset = Post.objects.order_by('-id')  # чтобы новость начиналась с последней добавленной
+    paginate_by = 3  # постраничный вывод в один элемент
+
+    def get_context_data(self, *, object_list=None, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['filter'] = PostFilter(self.request.GET, queryset=self.get_queryset())
+        return context
+
+
+class PostDetail(DetailView):
+    model = Post
+    template_name = 'blog.html'
+    context_object_name = 'blog'
+
+    def post(self, request, *args, **kwargs):
+        form = CommentForm(request.POST)
+
+        if form.is_valid():
+            form.save()
+
+        return super().get(request, *args, **kwargs)
+
+    # комменты
+    def get_context_data(self, **kwargs):
+        comment_list = super(PostDetail, self).get_context_data(**kwargs)
+        comment_list['comment'] = Comment.objects.all()
+        return comment_list
+
+
+class PostAdd(PermissionRequiredMixin, CreateView):
+    model = Post
+    template_name = 'add.html'
+    context_object_name = 'add'
+    queryset = Post.objects.order_by()
+    paginate_by = 10
+    form_class = PostForm
+    permission_required = ('news.add_post',)
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['time_now'] = datetime.utcnow()
+        context['value1'] = None
+        context['filter'] = PostFilter(self.request.GET, queryset=self.get_queryset())
+        context['categories'] = Category.objects.all()
+        context['authors'] = Author.objects.all()
+        context['form'] = PostForm()
+        return context
+
+
+class PostUpdateView(LoginRequiredMixin, UpdateView):
+    template_name = 'add.html'
+    form_class = PostForm
+    permission_required = ('news.change_post',)
+
+    def get_object(self, **kwargs):
+        id = self.kwargs.get('pk')
+        return Post.objects.get(pk=id)
+
+
+class PostDeleteView(LoginRequiredMixin, DeleteView):
+    template_name = 'post_delete.html'
+    queryset = Post.objects.all
+    success_url = '/blogs/'
+    permission_required = ('news.delete_post',)
+
+    def get_object(self, **kwargs):
+        id = self.kwargs.get('pk')
+        return Post.objects.get(pk=id)
+
+
+class BaseRegisterView(CreateView):
+    model = User
+    form_class = BaseRegisterForm
+    success_url = '/'
