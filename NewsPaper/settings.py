@@ -46,6 +46,7 @@ INSTALLED_APPS = [
     'allauth.socialaccount.providers.vk',
     'allauth.socialaccount.providers.odnoklassniki',
     'allauth.socialaccount.providers.google',
+    'allauth.socialaccount.providers.yandex',
     'django.contrib.sites',
     'django.contrib.flatpages',
     'django_filters',
@@ -143,7 +144,7 @@ STATIC_URL = 'static/'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 LOGIN_URL = 'login'
-SITE_ID=1
+SITE_ID = 1
 STATICFILES_DIRS = [BASE_DIR / 'static']
 
 # Изображения
