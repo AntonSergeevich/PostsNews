@@ -44,6 +44,8 @@ INSTALLED_APPS = [
     'allauth.account',
     'allauth.socialaccount',
     'allauth.socialaccount.providers.vk',
+    'allauth.socialaccount.providers.odnoklassniki',
+    'allauth.socialaccount.providers.google',
     'django.contrib.sites',
     'django.contrib.flatpages',
     'django_filters',

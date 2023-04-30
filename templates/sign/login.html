@@ -15,8 +15,8 @@
     </section>
 
     <div class="container">
-    <h2> Войти в систему </h2>
-        <form method="post" >
+        <h2> Войти в систему </h2>
+        <form method="post">
             {% csrf_token %}
 
             {{ form.username.label_tag }}
@@ -28,8 +28,19 @@
 
             <input class="row m-lg-2 " type="submit" value="Войти">
         </form>
-    <button class="m-2"><a href="{% url 'signup' %}"> Регистрация </a></button>
-    <h4>Или регистрация с помощью социальной сети <a href='/accounts/vk/login/?process=login&next=%2F'>VK</a></h4>
+        <button class="m-2"><a href="{% url 'signup' %}"> Регистрация </a></button>
+        <ul class="social-icons social-icons-clean" style="color: #0a0c0d">
+            <div>Войти с помощью: </div>
+            <li>
+                <a href='/accounts/vk/login/?process=login&next=%2F'><i class="fab fa-vk"></i></a>
+            </li>
+            <li>
+                <a href="/accounts/odnoklassniki/login/?process=login&next=%2F"><i class="fab fa-odnoklassniki"></i></a>
+            </li>
+            <li>
+                <a href="/accounts/google/login/?process=login&next=%2F"><i class="fab fa-google"></i></a>
+            </li>
+        </ul>
     </div>
 
 {% endblock %}
