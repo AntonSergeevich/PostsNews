@@ -8,6 +8,9 @@ from .forms import PostForm, CommentForm
 from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
 from datetime import datetime
 from django.contrib.auth.models import User
+from django.shortcuts import redirect
+from django.contrib.auth.models import Group
+from django.contrib.auth.decorators import login_required
 
 
 class Main(ListView):
@@ -84,6 +87,7 @@ class PostAdd(LoginRequiredMixin, CreateView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
+        context['is_not_premium'] = not self.request.user.groups.filter(name='premium').exists()
         context['time_now'] = datetime.utcnow()
         context['value1'] = None
         context['filter'] = PostFilter(self.request.GET, queryset=self.get_queryset())
@@ -118,3 +122,12 @@ class BaseRegisterView(CreateView):
     model = User
     form_class = BaseRegisterForm
     success_url = '/'
+
+
+@login_required
+def upgrade_me(request):
+    user = request.user
+    premium_group = Group.objects.get(name='premium')
+    if not request.user.groups.filter(name='premium').exists():
+        premium_group.user_set.add(user)
+    return redirect('/')

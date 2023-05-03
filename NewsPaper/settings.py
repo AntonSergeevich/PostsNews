@@ -146,6 +146,7 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 LOGIN_URL = 'login'
 SITE_ID = 1
 STATICFILES_DIRS = [BASE_DIR / 'static']
+ACCOUNT_FORMS = {'signup': 'sign.models.BasicSignupForm'}
 
 # Изображения
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
