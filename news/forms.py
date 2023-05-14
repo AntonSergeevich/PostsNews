@@ -13,4 +13,3 @@ class PostForm(ModelForm):
     class Meta:
         model = Post
         fields = ['author', 'categoryType', 'title', 'text', 'img']
-

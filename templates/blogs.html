@@ -31,7 +31,7 @@
             <div class="row py-3">
                 <div><a href="{% url 'post_create' %}"><h3>Добавить новость</h3></a></div>
                 {% if is_not_premium %}
-                    <div class="row py-3"><a href="sign/upgrade/">купить PREMIUM</a> </div>
+                    <div class="row py-3"><a href="{% url 'upgrade' %}">купить PREMIUM</a> </div>
                 {% endif %}
                 <div class="col-lg-8 mb-5 mb-lg-0">
                     {% if blogs %}

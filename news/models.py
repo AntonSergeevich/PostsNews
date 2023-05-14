@@ -9,17 +9,22 @@ from django.contrib.auth.models import Group
 class PageMain(models.Model):
     pass
 
+
 class PageAbout(models.Model):
     pass
+
 
 class PageCourse(models.Model):
     pass
 
+
 class PageTeacher(models.Model):
     pass
 
+
 class PageContact(models.Model):
     pass
+
 
 class Author(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
@@ -97,9 +102,9 @@ class Comment(models.Model):
 
 
 class BaseRegisterForm(UserCreationForm):
-    email = forms.EmailField(label = "Email")
-    first_name = forms.CharField(label = "Имя")
-    last_name = forms.CharField(label = "Фамилия")
+    email = forms.EmailField(label="Email")
+    first_name = forms.CharField(label="Имя")
+    last_name = forms.CharField(label="Фамилия")
 
     def save(self):
         user = super(UserCreationForm, self).save()
@@ -114,4 +119,4 @@ class BaseRegisterForm(UserCreationForm):
                   "last_name",
                   "email",
                   "password1",
-                  "password2", )
+                  "password2",)
