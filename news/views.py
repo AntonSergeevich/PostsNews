@@ -52,7 +52,7 @@ class PostList(ListView):
 
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['filter'] = PostFilter(self.request.GET, queryset=self.get_queryset())
+        context['is_not_premium'] = not self.request.user.groups.filter(name='premium').exists()
         return context
 
 
@@ -72,7 +72,7 @@ class PostDetail(LoginRequiredMixin, DetailView):
     # комменты
     def get_context_data(self, **kwargs):
         comment_list = super(PostDetail, self).get_context_data(**kwargs)
-        comment_list['is_not_premium'] = not self.request.user.groups.filter(name='premium').exists()
+        comment_list['comment'] = Comment.objects.all()
         return comment_list
 
 
