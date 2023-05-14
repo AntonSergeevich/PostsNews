@@ -40,6 +40,10 @@
 											<span class="opacity-3 d-inline-block px-2">|</span> {{blog.author.user}}
                                             <span class="opacity-3 d-inline-block px-2">|</span><a href="{% url 'post_update' blog.id %}">РЕДАКТИРОВАТЬ</a>
                                             <span class="opacity-3 d-inline-block px-2">|</span><a href="{% url 'post_delete' blog.id %}">УДАЛИТЬ</a></p>
+                                            {% if is_not_premium %}
+                                                <span class="opacity-3 d-inline-block px-2"></span><a href="sign/upgrade/">купить PREMIUM</a>
+                                            {% endif %}
+                                        </p>
 
 										<div class="post-image pb-4">
                                             {% if blog.img %}

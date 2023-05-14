@@ -3,6 +3,7 @@ from django.contrib.auth.models import User
 from django.db.models import Sum
 from django import forms
 from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth.models import Group
 
 
 class PageMain(models.Model):
@@ -99,6 +100,12 @@ class BaseRegisterForm(UserCreationForm):
     email = forms.EmailField(label = "Email")
     first_name = forms.CharField(label = "Имя")
     last_name = forms.CharField(label = "Фамилия")
+
+    def save(self):
+        user = super(UserCreationForm, self).save()
+        basic_group = Group.objects.get(name='basic')
+        basic_group.user_set.add(user)
+        return user
 
     class Meta:
         model = User
