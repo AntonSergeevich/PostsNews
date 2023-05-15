@@ -50,6 +50,7 @@ INSTALLED_APPS = [
     'django.contrib.sites',
     'django.contrib.flatpages',
     'django_filters',
+    'reviews',
 
 ]
 
@@ -160,8 +161,11 @@ ACCOUNT_USERNAME_REQUIRED = False
 ACCOUNT_AUTHENTICATION_METHOD = 'email'
 ACCOUNT_EMAIL_VERIFICATION = 'none'
 
+MY_INFO = 80
+MESSAGE_LEVEL = MY_INFO
+
 EMAIL_HOST = 'smtp.yandex.ru'
-EMAIL_PORT = 465
-EMAIL_HOST_USER = 'pokodim'
+EMAIL_HOST_USER = 'pokodim@yandex.ru'
 EMAIL_HOST_PASSWORD = 'Semantica31'
+EMAIL_PORT = 465
 EMAIL_USE_SSL = True
