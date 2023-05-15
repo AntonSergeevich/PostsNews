@@ -51,8 +51,11 @@ INSTALLED_APPS = [
     'django.contrib.flatpages',
     'django_filters',
     'reviews',
-
 ]
+
+DEFAULT_FROM_EMAIL = 'pokodim@yandex.ru'
+
+SITE_ID = 1
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
