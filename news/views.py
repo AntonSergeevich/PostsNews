@@ -1,4 +1,5 @@
 import requests
+from django.dispatch import receiver
 from django.shortcuts import render
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
 from .models import Post, Comment, Author, Category, PageMain, PageAbout, PageCourse, PageTeacher, PageContact, \
@@ -11,15 +12,21 @@ from django.contrib.auth.models import User
 from django.shortcuts import redirect
 from django.contrib.auth.models import Group
 from django.contrib.auth.decorators import login_required
+from django.core.mail import mail_managers
 from django.db.models.signals import post_save
 
 
-"""def notify_managers_appointment(sender, instance, created, **kwargs):
+@receiver(post_save, sender=Post)
+def notify_managers_appointment(sender, instance, created, **kwargs):
+    if created:
+        subject = f'{instance.author} {instance.date_creation.strftime("%d %m %Y")}'
+    else:
+        subject = f'Appointment changed for {instance.author} {instance.date_creation.strftime("%d %m %Y")}'
+
     mail_managers(
-        subject=f'{instance.client_name} {instance.date.strftime("%d %m %Y")}',
-        message=instance.message,
+        subject=subject,
+        message=instance.text,
     )
-    print(f'{instance.client_name} {instance.date.strftime("%d %m %Y")}')"""
 
 class Main(ListView):
     model = PageMain
