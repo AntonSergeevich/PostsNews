@@ -2,7 +2,8 @@ from django.contrib import admin
 from django.urls import path, include
 from django.conf import settings
 from django.conf.urls.static import static
-from news.views import Main, AboutUs, Courses, Teachers, Contacts
+from news.views import Main, AboutUs, Courses, Teachers, Contacts, PostList
+
 
 
 urlpatterns = [
@@ -12,8 +13,9 @@ urlpatterns = [
     path('courses/', Courses.as_view(), name='courses'),
     path('teachers/', Teachers.as_view(), name='teachers'),
     path('contact/', Contacts.as_view(), name='contacts'),
+    path('blogs/', PostList.as_view(), name='blogs'),
     path('pages/', include('django.contrib.flatpages.urls')),
-    path('blogs/', include('news.urls')),
+    path('/', include('news.urls')),
     path('accounts/', include('allauth.urls')),
     path('reviews/', include('reviews.urls')),
 

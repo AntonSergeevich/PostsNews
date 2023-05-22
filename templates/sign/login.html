@@ -20,11 +20,7 @@
         <form method="post">
             {% csrf_token %}
 
-            {{ form.username.label_tag }}
-            {{ form.username }}
-
-            {{ form.password.label_tag }}
-            {{ form.password }}
+            {{ form.as_p }}
 
 
             <input class="row m-lg-2 " type="submit" value="Войти">

@@ -53,9 +53,7 @@ INSTALLED_APPS = [
     'reviews',
 ]
 
-DEFAULT_FROM_EMAIL = 'pokodim@yandex.ru'
 
-SITE_ID = 1
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -150,7 +148,8 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 LOGIN_URL = 'login'
 SITE_ID = 1
 STATICFILES_DIRS = [BASE_DIR / 'static']
-ACCOUNT_FORMS = {'signup': 'news.models.BasicSignupForm'}
+#ACCOUNT_FORMS = {'signup': 'news.models.BasicSignupForm'}
+ACCOUNT_SIGNUP_FORM_CLASS = 'news.forms.SignupForm'
 
 # Изображения
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
@@ -162,13 +161,15 @@ ACCOUNT_EMAIL_REQUIRED = True
 ACCOUNT_UNIQUE_EMAIL = True
 ACCOUNT_USERNAME_REQUIRED = False
 ACCOUNT_AUTHENTICATION_METHOD = 'email'
-ACCOUNT_EMAIL_VERIFICATION = 'none'
+ACCOUNT_EMAIL_VERIFICATION = 'optional'
+DEFAULT_FROM_EMAIL = 'pokodim@yandex.ru'
+
 
 MY_INFO = 80
 MESSAGE_LEVEL = MY_INFO
 
 EMAIL_HOST = 'smtp.yandex.ru'
-EMAIL_HOST_USER = 'pokodim@yandex.ru'
+EMAIL_HOST_USER = 'pokodim'
 EMAIL_HOST_PASSWORD = 'Semantica31'
 EMAIL_PORT = 465
 EMAIL_USE_SSL = True

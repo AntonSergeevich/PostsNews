@@ -11,7 +11,15 @@ from django.contrib.auth.models import User
 from django.shortcuts import redirect
 from django.contrib.auth.models import Group
 from django.contrib.auth.decorators import login_required
+from django.db.models.signals import post_save
 
+
+"""def notify_managers_appointment(sender, instance, created, **kwargs):
+    mail_managers(
+        subject=f'{instance.client_name} {instance.date.strftime("%d %m %Y")}',
+        message=instance.message,
+    )
+    print(f'{instance.client_name} {instance.date.strftime("%d %m %Y")}')"""
 
 class Main(ListView):
     model = PageMain
@@ -41,7 +49,6 @@ class Contacts(ListView):
     model = PageContact
     template_name = 'contacts.html'
     context_object_name = 'contacts'
-
 
 class PostList(ListView):
     model = Post
