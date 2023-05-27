@@ -2,11 +2,12 @@ from django.forms import ModelForm
 from .models import Comment, Post
 from django import forms
 from django.contrib.auth.models import Group
+from django.db import models
 
 # Создаём модельную форму
 class CommentForm(ModelForm):
     class Meta:
-        model = Comment
+        model = Comment()
         fields = ['name', 'email', 'message']
 
 

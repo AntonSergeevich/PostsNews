@@ -86,7 +86,7 @@ class PostDetail(LoginRequiredMixin, DetailView):
     # комменты
     def get_context_data(self, **kwargs):
         comment_list = super(PostDetail, self).get_context_data(**kwargs)
-        comment_list['comment'] = Comment.objects.all()
+        comment_list['comments'] = Comment.objects.all()
         return comment_list
 
 

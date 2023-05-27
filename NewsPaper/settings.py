@@ -51,6 +51,7 @@ INSTALLED_APPS = [
     'django.contrib.flatpages',
     'django_filters',
     'reviews',
+    'django_apscheduler',
 ]
 
 
@@ -176,3 +177,6 @@ EMAIL_PORT = 465
 EMAIL_USE_SSL = True
 SERVER_EMAIL = "pokodim@yandex.ru"
 MANAGERS = [('Anton','glukhovas@yandex.ru')]
+
+APSCHEDULER_DATETIME_FORMAT = "N j, Y, f:s a"
+APSCHEDULER_RUN_NOW_TIMEOUT = 60
