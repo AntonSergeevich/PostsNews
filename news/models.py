@@ -4,6 +4,7 @@ from django.db.models import Sum
 from django import forms
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import Group
+from django.core.cache import cache
 
 
 class PageMain(models.Model):
@@ -62,6 +63,10 @@ class Post(models.Model):
     text = models.TextField()
     rating = models.SmallIntegerField(default=0)
     img = models.ImageField(blank=True)
+
+    def save(self, *args, **kwargs):
+        super().save(*args, **kwargs)  # сначала вызываем метод родителя, чтобы объект сохранился
+        cache.delete(f'post_detail-{self.pk}')
 
     def like(self):
         self.rating += 1

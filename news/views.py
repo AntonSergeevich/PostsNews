@@ -1,6 +1,4 @@
-import requests
 from django.dispatch import receiver
-from django.shortcuts import render
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
 from .models import Post, Comment, Author, Category, PageMain, PageAbout, PageCourse, PageTeacher, PageContact, \
     BaseRegisterForm
@@ -14,6 +12,7 @@ from django.contrib.auth.models import Group
 from django.contrib.auth.decorators import login_required
 from django.core.mail import mail_managers
 from django.db.models.signals import post_save
+from django.core.cache import cache
 
 
 @receiver(post_save, sender=Post)
@@ -75,6 +74,17 @@ class PostDetail(LoginRequiredMixin, DetailView):
     template_name = 'blog.html'
     context_object_name = 'blog'
 
+    def get_object(self, *args, **kwargs):  # переопределяем метод получения объекта, как ни странно
+        obj = cache.get(f'product-{self.kwargs["pk"]}',
+                        None)  # кэш очень похож на словарь, и метод get действует также. Он забирает значение по ключу, если его нет, то забирает None.
+
+        # если объекта нет в кэше, то получаем его и записываем в кэш
+        if not obj:
+            obj = super().get_object(queryset=self.queryset)
+            cache.set(f'product-{self.kwargs["pk"]}', obj)
+
+        return obj
+
     def post(self, request, *args, **kwargs):
         form = CommentForm(request.POST)
 
@@ -82,6 +92,8 @@ class PostDetail(LoginRequiredMixin, DetailView):
             form.save()
 
         return super().get(request, *args, **kwargs)
+
+
 
     # комменты
     def get_context_data(self, **kwargs):
